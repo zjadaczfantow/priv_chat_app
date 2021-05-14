@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Penguin Coders Chat</title>
+<!--Link to CSS -->
+<link href="../static/bootstrap.min.css" rel="stylesheet" />
+<link href="../static/style.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+
+<body class="text-center">
+
+
+<div class="col-sm-6 login-container">
+
+<h3>Live_Chat_App</h3>
+<h3>Room : {{session['room']}}</h3><br>
+
+<div class="form-group">
+<textarea class="form-control" id="chat" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br /><br />
+</div>
+
+<div class="form-group">
+<input class="form-control" type="text" id="text" size="60" placeholder="Enter your message here" />
+</div>
+
+<div class="form-group">
+<button type="button" id="send" class="btn btn-success">SEND</button><br /><br />
+<button type="button" class="btn btn-danger" onclick=leave_room()>Leave this Chat</button>
+</div>
+
+</div>
+
+</body>
+</html>
