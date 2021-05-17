@@ -6,15 +6,47 @@
 <link href="../static/bootstrap.min.css" rel="stylesheet" />
 <link href="../static/style.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="../static/style.css">
+<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+var socket;
+$(document).ready(function(){
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+    socket.on('connect', function() {
+        socket.emit('join', {});
+    });
+    socket.on('status', function(data) {
+        $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    });
+    socket.on('message', function(data) {
+        $('#chat').val($('#chat').val() + data.msg + '\n');
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    });
+    $('#send').click(function(e) {
+            text = $('#text').val();
+            $('#text').val('');
+            socket.emit('text', {msg: text});
+    });
+});
+function leave_room() {
+    socket.emit('left', {}, function() {
+        socket.disconnect();
+        // go back to the login page
+        window.location.href = "{{ url_for('index') }}";
+    });
+}
+</script>
 </head>
 
 <body class="text-center">
 
 
-<div class="col-sm-6 login-container">
+<div class="col-sm-6 chat-container">
 
-<h3>Live_Chat_App</h3>
-<h3>Room : {{session['room']}}</h3><br>
+<h5>Live_Chat_App</h5>
+<h5>Room : {{session['room']}}</h5>
 
 <div class="form-group">
 <textarea class="form-control" id="chat" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br /><br />
